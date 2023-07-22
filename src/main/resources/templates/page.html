@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hello {name ?: "Qute"}</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+        }
+        h1 {
+            color: #4695EB;
+            font-size: 6vw;
+        }
+
+        h1 b {
+            color: #be9100;
+        }
+
+        p {
+            font-size: 2vw;
+        }
+    </style>
+</head>
+<body>
+<h1>Hello <b>{name ?: "Qute"}</b></h1>
+
+<form action="/some-page/result" method="POST" name="todoForm" enctype="application/x-www-form-urlencoded">
+    <div class="col-sm-3 my-1">
+        <label class="sr-only" for="number1">Número 1</label>
+        <input type="text" name="number1" class="form-control" id="number1" placeholder="Insira o primeiro número" required />
+        <label class="sr-only" for="number2">Número 2</label>
+        <input type="text" name="number2" class="form-control" id="number2" placeholder="Insira o segundo número" required />
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        Teste
+      </button>
+</form>
+
+<p>Create your web page using Quarkus RESTEasy & Qute</p>
+</body>
+</html>
