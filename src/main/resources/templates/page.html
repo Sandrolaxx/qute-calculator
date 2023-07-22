@@ -23,21 +23,29 @@
     </style>
 </head>
 <body>
-<h1>Hello <b>{name ?: "Qute"}</b></h1>
-
-<form action="/some-page/result" method="POST" name="todoForm" enctype="application/x-www-form-urlencoded">
+<form action="/calculator" method="POST" name="todoForm" enctype="application/x-www-form-urlencoded">
     <div class="col-sm-3 my-1">
         <label class="sr-only" for="number1">Número 1</label>
         <input type="text" name="number1" class="form-control" id="number1" placeholder="Insira o primeiro número" required />
+        <br/>
         <label class="sr-only" for="number2">Número 2</label>
         <input type="text" name="number2" class="form-control" id="number2" placeholder="Insira o segundo número" required />
+        <br/>
+        <div class="col-auto my-1">
+        <select class="custom-select"  name="operation">
+            <option disabled value="">Priority</option>
+            {#for operation in arithmeticOperations}
+                <option value="{operation}">{operation}</option>
+            {/for}
+        </select>
+    </div>
       </div>
 
       <button type="submit" class="btn btn-primary">
-        Teste
+        Calcular
       </button>
 </form>
 
-<p>Create your web page using Quarkus RESTEasy & Qute</p>
+<p>Crie sua página web utilizando Quarkus RESTEasy & Qute</p>
 </body>
 </html>
