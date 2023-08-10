@@ -1,51 +1,46 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Hello {name ?: "Qute"}</title>
-    <style>
-        body {
-            background-color: #000;
-            color: #fff;
-        }
-        h1 {
-            color: #4695EB;
-            font-size: 6vw;
-        }
-
-        h1 b {
-            color: #be9100;
-        }
-
-        p {
-            font-size: 2vw;
-        }
-    </style>
+    <title>Olá {name ?: "Qute"}</title>
+    <link rel="stylesheet" href="page.css">
 </head>
+
 <body>
-<form action="/calculator" method="POST" name="todoForm" enctype="application/x-www-form-urlencoded">
-    <div class="col-sm-3 my-1">
-        <label class="sr-only" for="number1">Número 1</label>
-        <input type="text" name="number1" class="form-control" id="number1" placeholder="Insira o primeiro número" required />
-        <br/>
-        <label class="sr-only" for="number2">Número 2</label>
-        <input type="text" name="number2" class="form-control" id="number2" placeholder="Insira o segundo número" required />
-        <br/>
-        <div class="col-auto my-1">
-        <select class="custom-select"  name="operation">
-            <option disabled value="">Priority</option>
-            {#for operation in arithmeticOperations}
-                <option value="{operation}">{operation}</option>
-            {/for}
-        </select>
-    </div>
-      </div>
+    <main class="container">
+        <img src="eng-logo.gif" class="logo-course" />
+        <form class="content" action="/calculator" method="POST" name="todoForm"
+            enctype="application/x-www-form-urlencoded">
+            <div class="input-calcuate">
+                <div class="inputs">
+                    <label for="number1">Insira o primeiro número</label>
+                    <input class="input-content" type="number" name="firstNumber" class="form-control" id="number1"
+                        placeholder="Primeiro número" required />
+                    <br />
+                    <label for="number2">Insira o segundo número</label>
+                    <input class="input-content" type="number" name="secondNumber" class="form-control" id="number2"
+                        placeholder="Segundo número" required />
+                    <br />
+                </div>
+                <div class="inputs">
+                    <select class="input-content" name="operation">
+                        <option disabled value="">Operação</option>
+                        {#for operation in arithmeticOperations}
+                        <option value="{operation}">{operation}</option>
+                        {/for}
+                    </select>
+                </div>
+                <button class="btn-calculate" type="submit">
+                    Calcular
+                </button>
+            </div>
 
-      <button type="submit" class="btn btn-primary">
-        Calcular
-      </button>
-</form>
-
-<p>Crie sua página web utilizando Quarkus RESTEasy & Qute</p>
+        </form>
+        <div class="bottom-text">
+            <p>Página criada utilizando Quarkus RESTEasy & Qute🔥</p>
+        </div>
+    </main>
 </body>
+
 </html>

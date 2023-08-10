@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Hello {name ?: "Qute"}</title>
-    <style>
-        body {
-            background-color: #000;
-            color: #fff;
-        }
-        h1 {
-            color: #4695EB;
-            font-size: 6vw;
-        }
-
-        h1 b {
-            color: #be9100;
-        }
-
-        p {
-            font-size: 2vw;
-        }
-    </style>
+    <title>Olá {name ?: "Qute"}</title>
+    <link rel="stylesheet" href="page.css">
 </head>
-<body>
-<h1>Calculadora do <b>{name ?: "Qute"}</b></h1>
 
-<p>Resultado é {result}</p>
+<body>
+    <main class="container">
+        <img src="eng-logo.gif" class="logo-course" />
+        <form class="content" action="/calculator" method="GET" name="todoForm">
+            <div class="input-calcuate">
+                <div class="result">
+                    <h2>Calculadora <br />do<br /> <b>{name ?: "Qute"}</b></h2>
+                    <p>Resultado é <b>{result}</b></p>
+                </div>
+                <button class="btn-calculate" type="submit">
+                    Voltar
+                </button>
+            </div>
+        </form>
+        <div class="bottom-text">
+            <p>Página criada utilizando Quarkus RESTEasy & Qute🔥</p>
+        </div>
+    </main>
 </body>
+
 </html>

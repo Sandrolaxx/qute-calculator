@@ -1,8 +1,10 @@
-package org.aktie;
+package org.aktie.controllers;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+
+import org.aktie.model.EnumUserOption;
 
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
@@ -36,14 +38,28 @@ public class Calculator {
 
     @POST
     @Consumes("application/x-www-form-urlencoded")
-    public TemplateInstance calculate(@FormParam("number1") String firstNumber,
-            @FormParam("number2") String secondNumber, @FormParam("operation") String operation) {
+    public TemplateInstance calculate(@FormParam("firstNumber") String firstNumber,
+            @FormParam("secondNumber") String secondNumber, @FormParam("operation") String operation) {
 
         BigDecimal result = BigDecimal.ZERO;
+        BigDecimal valueOne = BigDecimal.valueOf(Double.parseDouble(firstNumber));
+        BigDecimal valueTwo = BigDecimal.valueOf(Double.parseDouble(secondNumber));
 
-        if (operation.equals("Soma")) {
-            result = BigDecimal.valueOf(Double.parseDouble(firstNumber))
-                    .multiply(BigDecimal.valueOf(Double.parseDouble(secondNumber)));
+        switch (EnumUserOption.parseByValue(operation)) {
+            case SUM:
+                result = valueOne.add(valueTwo);
+                break;
+            case SUBTRACTION:
+                result = valueOne.subtract(valueTwo);
+                break;
+            case MULTIPLICATION:
+                result = valueOne.multiply(valueTwo);
+                break;
+            case DIVISION:
+                result = valueOne.divide(valueTwo);// ArithmeticException
+                break;
+            default:
+                break;
         }
 
         return calculator.data("result", result.setScale(2, RoundingMode.HALF_UP));
