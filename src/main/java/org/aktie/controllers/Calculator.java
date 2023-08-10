@@ -1,10 +1,11 @@
 package org.aktie.controllers;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.aktie.model.EnumUserOption;
+import org.aktie.services.CalculatorSerivce;
 
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
@@ -29,9 +30,13 @@ public class Calculator {
     @Inject
     Template calculator;
 
+    @Inject
+    CalculatorSerivce serivce;
+
     @GET
     public TemplateInstance get(@QueryParam("name") String name) {
-        List<String> arithmeticOperations = List.of("Soma", "Subtração", "Multiplicação", "Divisão");
+        List<String> arithmeticOperations = List.of(EnumUserOption.values()).stream()
+                .map(e -> e.getValue()).collect(Collectors.toList());
 
         return page.data("name", name, "arithmeticOperations", arithmeticOperations);
     }
@@ -41,28 +46,16 @@ public class Calculator {
     public TemplateInstance calculate(@FormParam("firstNumber") String firstNumber,
             @FormParam("secondNumber") String secondNumber, @FormParam("operation") String operation) {
 
-        BigDecimal result = BigDecimal.ZERO;
         BigDecimal valueOne = BigDecimal.valueOf(Double.parseDouble(firstNumber));
         BigDecimal valueTwo = BigDecimal.valueOf(Double.parseDouble(secondNumber));
 
-        switch (EnumUserOption.parseByValue(operation)) {
-            case SUM:
-                result = valueOne.add(valueTwo);
-                break;
-            case SUBTRACTION:
-                result = valueOne.subtract(valueTwo);
-                break;
-            case MULTIPLICATION:
-                result = valueOne.multiply(valueTwo);
-                break;
-            case DIVISION:
-                result = valueOne.divide(valueTwo);// ArithmeticException
-                break;
-            default:
-                break;
+        if (valueTwo.equals(BigDecimal.ZERO)) {
+            throw new RuntimeException("Erro! Segundo número inválido");
         }
 
-        return calculator.data("result", result.setScale(2, RoundingMode.HALF_UP));
+        BigDecimal result = serivce.handleCalculate(EnumUserOption.parseByValue(operation), valueOne, valueTwo);
+
+        return calculator.data("result", result);
     }
 
 }
