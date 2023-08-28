@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.aktie.model.EnumUserOption;
 import org.aktie.services.CalculatorSerivce;
 
-import io.quarkus.qute.Template;
+import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -24,11 +24,12 @@ import jakarta.ws.rs.core.MediaType;
 @Produces(MediaType.TEXT_HTML)
 public class Calculator {
 
-    @Inject
-    Template page;
+    @CheckedTemplate
+    public static class Templates {
+        public static native TemplateInstance page(String name, List<String> arithmeticOperations);
 
-    @Inject
-    Template calculator;
+        public static native TemplateInstance calculator(BigDecimal result, String name);
+    }
 
     @Inject
     CalculatorSerivce serivce;
@@ -38,7 +39,7 @@ public class Calculator {
         List<String> arithmeticOperations = List.of(EnumUserOption.values()).stream()
                 .map(e -> e.getValue()).collect(Collectors.toList());
 
-        return page.data("name", name, "arithmeticOperations", arithmeticOperations);
+        return Templates.page(name, arithmeticOperations);
     }
 
     @POST
@@ -55,7 +56,7 @@ public class Calculator {
 
         BigDecimal result = serivce.handleCalculate(EnumUserOption.parseByValue(operation), valueOne, valueTwo);
 
-        return calculator.data("result", result);
+        return Templates.calculator(result, "Sandrolax");
     }
 
 }
