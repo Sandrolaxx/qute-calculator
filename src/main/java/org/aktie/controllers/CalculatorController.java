@@ -22,7 +22,7 @@ import jakarta.ws.rs.core.MediaType;
 @Path("/calculator")
 @Consumes(MediaType.TEXT_HTML)
 @Produces(MediaType.TEXT_HTML)
-public class Calculator {
+public class CalculatorController {
 
     @CheckedTemplate
     public static class Templates {
@@ -32,7 +32,7 @@ public class Calculator {
     }
 
     @Inject
-    CalculatorSerivce serivce;
+    CalculatorSerivce service;
 
     @GET
     public TemplateInstance get(@QueryParam("name") String name) {
@@ -54,7 +54,7 @@ public class Calculator {
             throw new RuntimeException("Erro! Segundo número inválido");
         }
 
-        BigDecimal result = serivce.handleCalculate(EnumUserOption.parseByValue(operation), valueOne, valueTwo);
+        BigDecimal result = service.handleCalculate(EnumUserOption.parseByValue(operation), valueOne, valueTwo);
 
         return Templates.calculator(result, "Sandrolax");
     }
