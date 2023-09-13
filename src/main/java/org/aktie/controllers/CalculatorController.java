@@ -4,8 +4,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.aktie.dto.ExternalTextDTO;
 import org.aktie.model.EnumUserOption;
 import org.aktie.services.CalculatorSerivce;
+import org.aktie.services.RestHttpClient;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
@@ -26,7 +29,7 @@ public class CalculatorController {
 
     @CheckedTemplate
     public static class Templates {
-        public static native TemplateInstance page(String name, List<String> arithmeticOperations);
+        public static native TemplateInstance page(String name, List<String> arithmeticOperations, String externalText);
 
         public static native TemplateInstance calculator(BigDecimal result, String name);
     }
@@ -34,12 +37,21 @@ public class CalculatorController {
     @Inject
     CalculatorSerivce service;
 
+    @Inject
+    @RestClient
+    RestHttpClient restClient;
+
+    public String exteralText;
+
     @GET
     public TemplateInstance get(@QueryParam("name") String name) {
+        ExternalTextDTO externalTextDTO = restClient.fetchExternalData();
+        exteralText = externalTextDTO.getText();
+
         List<String> arithmeticOperations = List.of(EnumUserOption.values()).stream()
                 .map(e -> e.getValue()).collect(Collectors.toList());
 
-        return Templates.page(name, arithmeticOperations);
+        return Templates.page(name, arithmeticOperations, exteralText);
     }
 
     @POST
