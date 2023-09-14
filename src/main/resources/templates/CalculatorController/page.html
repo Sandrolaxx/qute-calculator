@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Olá {name ?: "Qute"}</title>
+    <title>Calculadora Bala</title>
     <link rel="stylesheet" href="page.css" />
   </head>
 
@@ -45,7 +45,7 @@
             <div class="inputs">
               <select class="input-content" name="operation">
                 <option disabled value="">Operação</option>
-                {#for operation in arithmeticOperations}
+                {#for operation in dataDTO.arithmeticOperations}
                 <option value="{operation}">{operation}</option>
                 {/for}
               </select>
@@ -56,15 +56,21 @@
       </div>
       <div class="extra-challenges">
         <h1>Desafios extras🔥</h1>
-        <h3>
-            1º Desafio - Busca de dados em serviços externos
-        </h3>
-        <p>
-            Texto retorno: <b>{externalText}</b>
-        </p>
-        <h3>
-            2º Desafio - Salvar em base de dados os calculos realizados
-        </h3>
+        <h3>1º Desafio - Busca de dados em serviços externos</h3>
+        <p>Texto retorno: <b>{dataDTO.externalText}</b></p>
+        <h3>2º Desafio - Salvar em base de dados os calculos realizados</h3>
+        <table>
+          <tr>
+            <th>Id</th>
+            <th>Valor</th>
+          </tr>
+          {#for result in dataDTO.results}
+          <tr>
+            <td>{result.getId}</td>
+            <td>{result.getOperation}</td>
+          </tr>
+          {/for}
+        </table>
       </div>
     </main>
     <div class="bottom-text">

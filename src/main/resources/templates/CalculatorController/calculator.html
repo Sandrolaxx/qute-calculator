@@ -1,30 +1,47 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Calculadora Bala</title>
+    <link rel="stylesheet" href="page.css" />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Olá {name ?: "Qute"}</title>
-    <link rel="stylesheet" href="page.css">
-</head>
-
-<body>
+  <body>
     <main class="container">
-        <img src="eng-logo.gif" class="logo-course" />
-        <form class="content" action="/calculator" method="GET" name="todoForm">
-            <div class="input-calcuate">
-                <div class="result">
-                    <h2>Calculadora <br />do<br /> <b>{name ?: "Qute"}</b></h2>
-                    <p>Resultado é <b>{result.formatSign}</b></p>
-                </div>
-                <button class="btn-calculate" type="submit">
-                    Voltar
-                </button>
-            </div>
-        </form>
-        <div class="bottom-text">
-            <p>Página criada utilizando Quarkus RESTEasy & Qute🔥</p>
+      <img src="eng-logo.gif" class="logo-course" />
+      <form class="content" action="/calculator" method="GET" name="todoForm">
+        <div class="input-calcuate">
+          <div class="result">
+            <h2>
+              Calculadora <br />do<br />
+              <b>Sandrolaxx</b>
+            </h2>
+            <p>Resultado é <b>{dataDTO.result.formatSign}</b></p>
+          </div>
+          <button class="btn-calculate" type="submit">Voltar</button>
         </div>
+      </form>
+      <div class="extra-challenges">
+        <h1>Desafios extras🔥</h1>
+        <h3>1º Desafio - Busca de dados em serviços externos</h3>
+        <p>Texto retorno: <b>{dataDTO.externalText}</b></p>
+        <h3>2º Desafio - Salvar em base de dados os calculos realizados</h3>
+        <table>
+          <tr>
+            <th>Id</th>
+            <th>Valor</th>
+          </tr>
+          {#for result in dataDTO.results}
+          <tr>
+            <td>{result.getId}</td>
+            <td>{result.getOperation}</td>
+          </tr>
+          {/for}
+        </table>
+      </div>
+      <div class="bottom-text">
+        <p>Página criada utilizando Quarkus RESTEasy & Qute🔥</p>
+      </div>
     </main>
-</body>
-
+  </body>
 </html>

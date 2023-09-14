@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.aktie.dto.ExternalTextDTO;
+import org.aktie.dto.TemplateDataDTO;
 import org.aktie.model.EnumUserOption;
 import org.aktie.services.CalculatorSerivce;
 import org.aktie.services.RestHttpClient;
+import org.aktie.services.ResultService;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import io.quarkus.qute.CheckedTemplate;
@@ -29,9 +31,9 @@ public class CalculatorController {
 
     @CheckedTemplate
     public static class Templates {
-        public static native TemplateInstance page(String name, List<String> arithmeticOperations, String externalText);
+        public static native TemplateInstance page(TemplateDataDTO dataDTO);
 
-        public static native TemplateInstance calculator(BigDecimal result, String name);
+        public static native TemplateInstance calculator(TemplateDataDTO dataDTO);
     }
 
     @Inject
@@ -41,17 +43,21 @@ public class CalculatorController {
     @RestClient
     RestHttpClient restClient;
 
-    public String exteralText;
+    @Inject
+    ResultService resultService;
+
+    TemplateDataDTO dataDTO = new TemplateDataDTO();
 
     @GET
     public TemplateInstance get(@QueryParam("name") String name) {
         ExternalTextDTO externalTextDTO = restClient.fetchExternalData();
-        exteralText = externalTextDTO.getText();
+        dataDTO.setExternalText(externalTextDTO.getText());
 
         List<String> arithmeticOperations = List.of(EnumUserOption.values()).stream()
                 .map(e -> e.getValue()).collect(Collectors.toList());
+        dataDTO.setArithmeticOperations(arithmeticOperations);
 
-        return Templates.page(name, arithmeticOperations, exteralText);
+        return Templates.page(dataDTO);
     }
 
     @POST
@@ -61,14 +67,24 @@ public class CalculatorController {
 
         BigDecimal valueOne = BigDecimal.valueOf(Double.parseDouble(firstNumber));
         BigDecimal valueTwo = BigDecimal.valueOf(Double.parseDouble(secondNumber));
+        EnumUserOption parsedOption = EnumUserOption.parseByValue(operation);
 
         if (valueTwo.equals(BigDecimal.ZERO)) {
             throw new RuntimeException("Erro! Segundo número inválido");
         }
+        
+        if (parsedOption == null) {
+            throw new RuntimeException("Erro! Opção selecionada inválida!");
+        }
 
-        BigDecimal result = service.handleCalculate(EnumUserOption.parseByValue(operation), valueOne, valueTwo);
+        BigDecimal resultValue = service.handleCalculate(parsedOption, valueOne, valueTwo);
 
-        return Templates.calculator(result, "Sandrolax");
+        resultService.saveResult(parsedOption, secondNumber, operation, resultValue);
+
+        dataDTO.setResults(resultService.getAll());
+        dataDTO.setResult(resultValue);
+
+        return Templates.calculator(dataDTO);
     }
 
 }
