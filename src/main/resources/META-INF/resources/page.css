@@ -161,3 +161,8 @@ body {
 .result p {
   font-size: 34px;
 }
+
+.border {
+    border-width: 2px;
+    border-color: #212121;
+}

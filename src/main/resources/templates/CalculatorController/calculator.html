@@ -8,26 +8,28 @@
 
   <body>
     <main class="container">
-      <img src="eng-logo.gif" class="logo-course" />
-      <form class="content" action="/calculator" method="GET" name="todoForm">
-        <div class="input-calcuate">
-          <div class="result">
-            <h2>
-              Calculadora <br />do<br />
-              <b>Sandrolaxx</b>
-            </h2>
-            <p>Resultado é <b>{dataDTO.result.formatSign}</b></p>
+      <div class="input-calcuate">
+        <img src="eng-logo.gif" class="logo-course" />
+        <form class="content" action="/calculator" method="GET" name="todoForm">
+          <div class="input-calcuate">
+            <div class="result">
+              <h2>
+                Calculadora <br />do<br />
+                <b>Sandrolaxx</b>
+              </h2>
+              <p>Resultado é <b>{dataDTO.result.formatSign}</b></p>
+            </div>
+            <button class="btn-calculate" type="submit">Voltar</button>
           </div>
-          <button class="btn-calculate" type="submit">Voltar</button>
-        </div>
-      </form>
+        </form>
+      </div>
       <div class="extra-challenges">
         <h1>Desafios extras🔥</h1>
         <h3>1º Desafio - Busca de dados em serviços externos</h3>
         <p>Texto retorno: <b>{dataDTO.externalText}</b></p>
         <h3>2º Desafio - Salvar em base de dados os calculos realizados</h3>
         <table>
-          <tr>
+          <tr  class="border">
             <th>Id</th>
             <th>Valor</th>
           </tr>
@@ -39,9 +41,9 @@
           {/for}
         </table>
       </div>
-      <div class="bottom-text">
-        <p>Página criada utilizando Quarkus RESTEasy & Qute🔥</p>
-      </div>
     </main>
+    <div class="bottom-text">
+      <p>Página criada utilizando Quarkus RESTEasy & Qute🔥</p>
+    </div>
   </body>
 </html>
